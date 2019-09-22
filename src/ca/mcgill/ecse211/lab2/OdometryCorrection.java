@@ -3,21 +3,32 @@ package ca.mcgill.ecse211.lab2;
 import static ca.mcgill.ecse211.lab2.Resources.*;
 
 import lejos.hardware.Sound;
+//import lejos.robotics.SampleProvider;
 import lejos.robotics.SampleProvider;
 
 public class OdometryCorrection implements Runnable {
+	
   private static final long CORRECTION_PERIOD = 10;
   public float[] dataArray;
-//  private SampleProvider colorDetector;
-  public static double theta = 0;
+  private SampleProvider colorDetector;
+  public static double theta;
+  public static int counterX;
+  public static int counterY;
+  public static double tempXCoordinate;
+  public static double tempYCoordinate;
   public Odometer odo;
-  public static int counterX = 0;
-  public static int counterY = 0;
-  public static double tempXCoordinate = 0;
-  public static double tempYCoordinate = 0;
+//  private SampleProvider lsColour;
+//  private float[] lsData;
   /*
    * Here is where the odometer correction code should be run.
    */
+  public OdometryCorrection() {
+	    this.odo = odometer;
+//	    this.lsSensor = new EV3ColorSensor(lsPort);
+	    this.colorDetector = colorSensor.getMode("Red");
+	    this.dataArray = new float[colorSensor.sampleSize()];
+	  }
+  
   public void run() {
     long correctionStart, correctionEnd;
 //    
@@ -26,11 +37,10 @@ public class OdometryCorrection implements Runnable {
       
       boolean lineDetected = false; 															//when the robot detects a line
       
-      colorSensor.fetchSample(dataArray, 0);															//fetch sample, store in array dataArray
+      colorSensor.fetchSample(dataArray, 0);													//fetch sample, store in array dataArray
       float lightIntensity = dataArray[0];
       
-      if(lightIntensity <= 100 && !lineDetected) {												//when line detected
-    	  Sound.beep();
+      if(lightIntensity <= 100 && lightIntensity > 70 && !lineDetected) {												//when line detected
     	  theta = odo.getXYT()[2]*180/Math.PI;													//get theta reading
     	  
     	  if((theta >= 315 && theta < 360) || (theta >= 0 && theta < 45)) {						//NORTH
@@ -86,6 +96,7 @@ public class OdometryCorrection implements Runnable {
     		  }
     		  odo.setX(tempXCoordinate);
     	  }
+    	  Sound.beep();
     	  lineDetected = true;
       }
       else {
