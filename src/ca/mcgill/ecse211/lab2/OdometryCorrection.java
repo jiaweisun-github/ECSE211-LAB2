@@ -46,53 +46,52 @@ public class OdometryCorrection implements Runnable {
     	  if((theta >= 315 && theta < 360) || (theta >= 0 && theta < 45)) {						//NORTH
     		  counterY++;
     		  if(counterY == 1) {
-    			  tempYCoordinate = odo.getXYT()[1];
+    			  tempYCoordinate = 0;
     		  }
     		  if(counterY == 2) {
-    			  tempYCoordinate = odo.getXYT()[1]+TILE_SIZE;
+    			  tempYCoordinate = TILE_SIZE;
     		  }
     		  if(counterY == 3) {
-    			  tempYCoordinate = odo.getXYT()[1]+2*TILE_SIZE;
+    			  tempYCoordinate = 2*TILE_SIZE;
     		  }
     		  odo.setY(tempYCoordinate);
     	  }
     	  else if(theta >= 45 && theta < 135) {													//EAST
     		  counterX++;
     		  if(counterX == 1) {
-    			  tempXCoordinate = odo.getXYT()[0];
+    			  tempXCoordinate = 0;
     		  }
     		  if(counterX == 2) {
-    			  tempXCoordinate = odo.getXYT()[0]+TILE_SIZE;
+    			  tempXCoordinate = TILE_SIZE;
     		  }
     		  if(counterX == 3) {
-    			  tempXCoordinate = odo.getXYT()[0]+2*TILE_SIZE;
+    			  tempXCoordinate = 2*TILE_SIZE;
     		  }
     		  odo.setX(tempXCoordinate);
-
     	  }
     	  else if(theta >= 135 && theta < 225) {												//SOUTH
     		  counterY++;
     		  if(counterY == 4) {
-    			  tempYCoordinate = odo.getXYT()[1]+2*TILE_SIZE;
+    			  tempYCoordinate = 2*TILE_SIZE;
     		  }
     		  if(counterY == 5) {
-    			  tempYCoordinate = odo.getXYT()[1]+TILE_SIZE;
+    			  tempYCoordinate = TILE_SIZE;
     		  }
     		  if(counterY == 6) {
-    			  tempYCoordinate = odo.getXYT()[1];
+    			  tempYCoordinate = 0;
     		  }
     		  odo.setY(tempYCoordinate);
     	  }
     	  else if(theta >= 225 && theta < 315) {												//WEST
     		  counterX++;
     		  if(counterX == 4) {
-    			  tempXCoordinate = odo.getXYT()[0]+2*TILE_SIZE;
+    			  tempXCoordinate = 2*TILE_SIZE;
     		  }
     		  if(counterX == 5) {
-    			  tempXCoordinate = odo.getXYT()[0]+TILE_SIZE;
+    			  tempXCoordinate = TILE_SIZE;
     		  }
     		  if(counterX == 6) {
-    			  tempXCoordinate = odo.getXYT()[0];
+    			  tempXCoordinate = 0;
     		  }
     		  odo.setX(tempXCoordinate);
     	  }
