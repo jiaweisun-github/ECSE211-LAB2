@@ -30,74 +30,79 @@ public class OdometryCorrection implements Runnable {
 	  }
   
   public void run() {
-    long correctionStart, correctionEnd;
+    long correctionStart, correctionEnd;//black: 0.14, white: 0.32
 //    
-//    while (true) {
+    colorDetector.fetchSample(dataArray, 0);													//fetch sample, store in array dataArray
+    float initialLightIntensity = dataArray[0];
+    
+    while (true) {
       correctionStart = System.currentTimeMillis();
       
       boolean lineDetected = false; 															//when the robot detects a line
       
-      colorSensor.fetchSample(dataArray, 0);													//fetch sample, store in array dataArray
-      float lightIntensity = dataArray[0];
+      colorDetector.fetchSample(dataArray, 0);													//fetch sample, store in array dataArray
+      System.out.println("           "+dataArray[0]);
       
-      if(lightIntensity <= 100 && lightIntensity > 70 && !lineDetected) {												//when line detected
-    	  theta = odo.getXYT()[2]*180/Math.PI;													//get theta reading
+      if((dataArray[0]/initialLightIntensity) < 0.7 && !lineDetected) {							//when line detected
+    	  theta = odo.getXYT()[2]*180/Math.PI;													//get theta reading, convert to degrees
+    	  Sound.playNote(Sound.FLUTE, 440, 250);
     	  
-    	  if((theta >= 315 && theta < 360) || (theta >= 0 && theta < 45)) {						//NORTH
-    		  counterY++;
-    		  if(counterY == 1) {
-    			  tempYCoordinate = 0;
-    		  }
-    		  if(counterY == 2) {
+    	  //the (0,0) coordinate is at the right upper corner of the robot's position
+    	  
+    	  if (theta >= -45 && theta < 45) {						//NORTH, increment y-coordinate
+    		  counterY++;	
+    		  if(counterY == 1) {																	//1st line, set y-coordinate to TILE_SIZE (30.48)
     			  tempYCoordinate = TILE_SIZE;
     		  }
-    		  if(counterY == 3) {
+    		  if(counterY == 2) {																	//2nd line, set y-coordinate to 2*TILE_SIZE (61)
     			  tempYCoordinate = 2*TILE_SIZE;
+    		  }
+    		  if(counterY == 3) {																	//3nd line, set y-coordinate to 3*TILE_SIZE (61)
+    			  tempYCoordinate = 3*TILE_SIZE;
     		  }
     		  odo.setY(tempYCoordinate);
     	  }
-    	  else if(theta >= 45 && theta < 135) {													//EAST
+//    	  else if(theta >= 135 && theta < 225) {												//SOUTH
+//    		  counterY++;
+//    		  if(counterY == 4) {																	//4th line, set y-coordinate to 2*TILE_SIZE (61)
+//    			  tempYCoordinate = 3*TILE_SIZE;
+//    		  }
+//    		  if(counterY == 5) {																	//5th line, set y-coordinate to TILE_SIZE (30.48)
+//    			  tempYCoordinate = 2*TILE_SIZE;
+//    		  }
+//    		  if(counterY == 6) {																	//6th line, set y-coordinate to 0
+//    			  tempYCoordinate = TILE_SIZE;
+//    		  }
+//    		  odo.setY(tempYCoordinate);
+//    	  }
+    	  else if(theta >= 45) {																//EAST
     		  counterX++;
-    		  if(counterX == 1) {
-    			  tempXCoordinate = 0;
-    		  }
-    		  if(counterX == 2) {
+    		  if(counterX == 1) {																	//1st line, set x-coordinate to TILE_SIZE (30.48)
     			  tempXCoordinate = TILE_SIZE;
     		  }
-    		  if(counterX == 3) {
+    		  if(counterX == 2) {																	//2nd line, set y-coordinate to 2*TILE_SIZE (61)
     			  tempXCoordinate = 2*TILE_SIZE;
+    		  }
+    		  if(counterX == 3) {																	//3rd line, set y-coordinate to 2*TILE_SIZE (61)
+    			  tempXCoordinate = 3*TILE_SIZE;
+    		  }
+//    		 
+    		  if(counterX == 4) {																	//4th line, set y-coordinate to 2*TILE_SIZE (61)
+    			  tempXCoordinate = 3*TILE_SIZE;
+    		  }
+    		  if(counterX == 5) {																	//5th line, set y-coordinate to TILE_SIZE (30.48)
+    			  tempXCoordinate = 2*TILE_SIZE;
+    		  }
+    		  if(counterX == 6) {																	//6th line, set y-coordinate to 0
+    			  tempXCoordinate = TILE_SIZE;
     		  }
     		  odo.setX(tempXCoordinate);
     	  }
-    	  else if(theta >= 135 && theta < 225) {												//SOUTH
-    		  counterY++;
-    		  if(counterY == 4) {
-    			  tempYCoordinate = 2*TILE_SIZE;
-    		  }
-    		  if(counterY == 5) {
-    			  tempYCoordinate = TILE_SIZE;
-    		  }
-    		  if(counterY == 6) {
-    			  tempYCoordinate = 0;
-    		  }
-    		  odo.setY(tempYCoordinate);
-    	  }
-    	  else if(theta >= 225 && theta < 315) {												//WEST
-    		  counterX++;
-    		  if(counterX == 4) {
-    			  tempXCoordinate = 2*TILE_SIZE;
-    		  }
-    		  if(counterX == 5) {
-    			  tempXCoordinate = TILE_SIZE;
-    		  }
-    		  if(counterX == 6) {
-    			  tempXCoordinate = 0;
-    		  }
-    		  odo.setX(tempXCoordinate);
-    	  }
-    	  Sound.beep();
+    	  
+//    	  Sound.beep();
     	  lineDetected = true;
       }
+  
       else {
     	  lineDetected = false;
       }
@@ -114,4 +119,4 @@ public class OdometryCorrection implements Runnable {
   }
   
   
-//}
+}
