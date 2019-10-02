@@ -1,9 +1,12 @@
 // Lab2.java
 package ca.mcgill.ecse211.lab3;
 
-import static ca.mcgill.ecse211.lab3.Resources.*;
+//import static ca.mcgill.ecse211.lab3.Resources.*;
 
 import lejos.hardware.Button;
+//import lejos.hardware.sensor.EV3UltrasonicSensor;
+//import lejos.hardware.sensor.SensorModes;
+//import lejos.robotics.SampleProvider;
 
 /**
  * The main driver class for the odometry lab.
@@ -16,10 +19,14 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
+	
     int buttonChoice;
-    new Thread(odometer).start();
-    Navigation easyNavigation = new Navigation(Resources.odometer, Resources.leftMotor, Resources.rightMotor);
+//    Odometer odo = new Odometer();
+    new Thread(Resources.odometer).start();
+//    Display odometryDisplay = new Display();
+//    Navigation easyNavigation = new Navigation(Resources.odometer, Resources.leftMotor, Resources.rightMotor);
     buttonChoice = chooseNavigationMode();
+    new Thread(new Display()).start();
 
     if (buttonChoice == Button.ID_LEFT) {
     	new Thread(new Navigation(Resources.odometer,Resources.leftMotor,Resources.rightMotor)).start();

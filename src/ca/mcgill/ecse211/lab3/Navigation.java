@@ -16,6 +16,7 @@ public class Navigation extends Thread {
 		double yDistance;
 		double distance;
 		double angle = 0;
+		double angleRad;
 		/**
 		 * Constructor
 		 * 
@@ -34,11 +35,11 @@ public class Navigation extends Thread {
 			
 			double TILE_SIZE = Resources.TILE_SIZE;
 			// Input travel points here
-			travelTo((1 * TILE_SIZE), (1 * TILE_SIZE));
-			travelTo((0 * TILE_SIZE), (2 * TILE_SIZE));
-			travelTo((2 * TILE_SIZE), (2 * TILE_SIZE));
 			travelTo((2 * TILE_SIZE), (1 * TILE_SIZE));
-			travelTo((1 * TILE_SIZE), (0 * TILE_SIZE));
+			travelTo((0 * TILE_SIZE), (2 * TILE_SIZE));
+			travelTo((0 * TILE_SIZE), (1 * TILE_SIZE));
+			travelTo((2 * TILE_SIZE), (2 * TILE_SIZE));
+			travelTo((1 * TILE_SIZE), (2 * TILE_SIZE));
 		}
 
 		public void travelTo(double x, double y) {
@@ -54,6 +55,7 @@ public class Navigation extends Thread {
 			xDistance = x - odo.getXYT()[0];
 			yDistance = y - odo.getXYT()[1];
 			distance = Math.sqrt(Math.pow(xDistance, 2)+Math.pow(yDistance, 2));
+//			angle = Math.atan2(xDistance, yDistance);
 //			if(xDistance > 0 && yDistance > 0) {														//positive x and y, 1ST QUADRANT
 //				angle = (pi/2)-Math.atan(yDistance/xDistance);
 //			}
@@ -66,30 +68,75 @@ public class Navigation extends Thread {
 //			else if(xDistance > 0 && yDistance < 0) {													//positive x and negative y, 4TH QUADRANT
 //				angle = (pi/2)-Math.atan(yDistance/xDistance);
 //			}
-			if(xDistance > 0 && yDistance > 0) {														//positive x and y, 1ST QUADRANT GOOD
-				angle = (pi/2)-Math.atan(xDistance/yDistance);
+			if(xDistance > 0 && yDistance > 0) {				
+				angle = pi/2 - Math.toRadians(odo.getXYT()[2]) - Math.toRadians(odo.getXYT()[2]); //DONEEEEEE							//positive x and y, 1ST QUADRANT GOOD
+				
 			}
 			else if(xDistance < 0 && yDistance > 0) {													//negative x and positive y, 2ND QUADRANT GOOD
-				angle = (pi/2)-Math.atan(xDistance/yDistance);
+//				angle = (pi/2)-Math.atan(xDistance/yDistance);
+//				if(Math.toRadians(odo.getXYT()[2])>0 && Math.toRadians(odo.getXYT()[2])<pi/2) {
+//				if(Math.toRadians(odo.getXYT()[2])>3*pi/2 && Math.toRadians(odo.getXYT()[2])<2*pi){
+//					angle = -Math.toRadians(odo.getXYT()[2]+pi-Math.atan(yDistance/xDistance));
+//				}
+//					angle = -(Math.toRadians(odo.getXYT()[2])+(pi/2)+Math.atan(yDistance/xDistance));// normal
+//					
+//				}
+//				else if(Math.toRadians(odo.getXYT()[2])>pi/2 && Math.toRadians(odo.getXYT()[2])<pi) {
+////					angle = (Math.toRadians(odo.getXYT()[2])+(pi/2)+Math.atan(yDistance/xDistance));
+//				}
+//				else if(Math.toRadians(odo.getXYT()[2])> && Math.toRadians(odo.getXYT()[2])<pi)
+//				angle = pi+Math.atan(yDistance/xDistance)-Math.toRadians(odo.getXYT()[2]);
+//				angleRad = Math.toRadians(angle);
+				if((Math.toRadians(odo.getXYT()[2]) >= 3*pi/2 && Math.toRadians(odo.getXYT()[2]) < 2*pi)|| 								//DONNEEEEE
+						(Math.toRadians(odo.getXYT()[2]) <= 0 && Math.toRadians(odo.getXYT()[2]) > -pi/2)) {
+					if(Math.toRadians(odo.getXYT()[2])>3*pi/2+Math.atan(yDistance/xDistance)) {					//case 1
+						angle = 3*pi/2 - Math.atan(yDistance/xDistance) - Math.toRadians(odo.getXYT()[2]);
+					}
+					else {																						//case 2
+						angle = 3*pi/2 + Math.atan(yDistance/xDistance) - Math.toRadians(odo.getXYT()[2]);
+					}
+				}
+				else if(Math.toRadians(odo.getXYT()[2]) >= 0 && Math.toRadians(odo.getXYT()[2])< pi/2 ||
+						(Math.toRadians(odo.getXYT()[2]) <= -3*pi/2 && Math.toRadians(odo.getXYT()[2]) > -2*pi)) {
+					
+				}
+//				else if(Math.toRadians(odo.getXYT()[2])>= pi/2 && Math.toRadians(odo.getXYT()[2]) < pi || 
+//						(Math.toRadians(odo.getXYT()[2]) <= -pi && Math.toRadians(odo.getXYT()[2]) > -3*pi/2)) {
+//					angle = -pi/2 - Math.toRadians(odo.getXYT()[2] - Math.atan(yDistance/xDistance));
+//				}
+				else {
+					angle = 3*pi/2 - Math.toRadians(odo.getXYT()[2] + Math.atan(yDistance/xDistance));
+				}
+
 			}
 			else if(xDistance < 0 && yDistance < 0) {													//negative x and negative y, 3RD QUADRANT GOOD
-				angle = -((pi/2)+Math.atan(xDistance/yDistance));
-			}
+//				angle = -((pi/2)+Math.atan(xDistance/yDistance));
+//				angle = -(Math.toRadians(odo.getXYT()[2])+(pi/2)+Math.atan(yDistance/xDistance));
+				if(Math.toRadians(odo.getXYT()[2])>pi/2 && Math.toRadians(odo.getXYT()[2])<pi) {
+					angle = 3*pi/2 - Math.toRadians(odo.getXYT()[2]) + Math.atan(yDistance/xDistance);
+				}
+				
+				if(Math.toRadians(odo.getXYT()[2])>pi && Math.toRadians(odo.getXYT()[2])<3*pi/2) {
+					
+				}
+				
+				if(Math.toRadians(odo.getXYT()[2])>3*pi/2 && Math.toRadians(odo.getXYT()[2])<2*pi) {
+					angle = 3*pi/2 - Math.toRadians(odo.getXYT()[2]) + Math.atan(yDistance/xDistance);
+				}
+					angle = 3*pi/2-Math.atan(yDistance/xDistance)-Math.toRadians(odo.getXYT()[2]);
+				}
+//				angle = Math.toRadians(odo.getXYT()[2])+(pi/2)-Math.atan(yDistance/xDistance);
+			
 			else if(xDistance > 0 && yDistance < 0) {													//positive x and negative y, 4TH QUADRANT GOOD
 				angle = -((pi/2)+Math.atan(xDistance/yDistance));
 			}
-//			else if(xDistance == 0 && yDistance > 0) {													//if no x or no y displacement??
-//				
-//			}
-//			else if(yDistance == 0) {
-//				
-//			}
-
+			System.out.println("           "+angle);
+			
 			// Turn to face the waypoint
 			int ROTATE_SPEED = Resources.ROTATE_SPEED;
 			leftMotor.setSpeed(ROTATE_SPEED);
 			rightMotor.setSpeed(ROTATE_SPEED);
-			turnTo(angle);
+			turnBy(angle);
 
 			// Advance forward equal to path distance
 			int FORWARD_SPEED = Resources.FORWARD_SPEED;
@@ -100,24 +147,47 @@ public class Navigation extends Thread {
 			rightMotor.rotate(distanceToRotations(distance), false);
 		}
 
-		public void turnTo(double theta) {
-			double myAngle = 0;
-			if (theta - odo.getXYT()[2] > pi) {											//if the angle theta at which it turns is bigger than pi, new angle = angle - 2*pi
-				myAngle = angle - 2 * pi;
-			} else if (theta - odo.getXYT()[2] < -pi) {
-				myAngle = 2 * pi+ angle;
+		public void turnBy(double theta) {
+			double myAngle = theta;
+			if (angle > pi) {
+				angle = -(2*pi - angle);
+			} else if (angle < -pi) {
+				angle = 2 * pi + angle;
 			}
-			leftMotor.rotate(distanceToRotations(Resources.TRACK*myAngle/2), true);
-			rightMotor.rotate(-(distanceToRotations(Resources.TRACK*myAngle/2)), false);
+//			if (theta - odo.getXYT()[2] > pi/2) {											//if the angle theta at which it turns is bigger than pi, new angle = angle - 2*pi
+//				myAngle = theta - 2 * pi;
+//			} else if (theta - odo.getXYT()[2] < -pi) {
+//				myAngle = 2 * pi + theta;
+//			}
+			
+			leftMotor.rotate(radianToDegree(myAngle), true);
+			rightMotor.rotate(-(radianToDegree(myAngle)), false);
 		}
+//		public void turnTo(double theta) {
+//			double angle = getMinAngle(theta - odo.getTheta());
+//
+//			//double angle = theta - odometer.getTheta();
+//
+//			leftMotor.rotate(radianToDegree(angle), true);
+//			rightMotor.rotate(-radianToDegree(angle), false);
+//		}
+//
+//		public double getMinAngle(double angle) {
+//			if (angle > pi) {
+//				angle = angle - 2 * pi;
+//			} else if (angle < -pi) {
+//				angle = 2 * pi + angle;
+//			}
+//			return angle;
+//		}
 
 		public int distanceToRotations(double distance) {
 			return (int) (180 * distance / (pi * Resources.WHEEL_RAD));
 		}
 
-//		public int radianToDegree(double angle) {
-//			return distanceToRotations(Resources.TRACK * angle / 2);
-//		}
+		public int radianToDegree(double angle) {
+			return distanceToRotations(Resources.TRACK * angle / 2);
+		}
 		
 		/**
 		 * Checks to see if the robot is on the move or not

@@ -1,10 +1,14 @@
 package ca.mcgill.ecse211.lab3;
 
+//import static ca.mcgill.ecse211.lab2.Resources.colorSensor;
+import static ca.mcgill.ecse211.lab2.Resources.odometer;
 import static ca.mcgill.ecse211.lab3.Resources.*;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import lejos.robotics.SampleProvider;
 
 /**
  * The odometer class keeps track of the robot's (x, y, theta) position.
@@ -17,8 +21,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Younes Boubekeur
  */
 
-public class Odometer extends Thread {
-  
+public class Odometer implements Runnable{
+//	public float[] dataArray;
+//	private SampleProvider colorDetector;
   /**
    * The x-axis position in cm.
    */
@@ -55,7 +60,7 @@ public class Odometer extends Thread {
    */
   private Condition doneResetting = lock.newCondition();
     
-  private static Odometer odo; // Returned as singleton
+  private static Odometer odo;
 
   // Motor-related variables
   private static int lastLeftMotorTachoCount;								//last tachometer count, left and right wheel
@@ -74,8 +79,10 @@ public class Odometer extends Thread {
    * This is the default constructor of this class. It initiates all motors and variables once.It
    * cannot be accessed externally.
    */
-  Odometer() {
-    setXYT(0, 0, 0);
+  public Odometer() {
+//	  this.odo = odometer;
+//	  this.dataArray = new float[colorSensor.sampleSize()];
+	  setXYT(0, 0, 0);
   }
   														
   /**

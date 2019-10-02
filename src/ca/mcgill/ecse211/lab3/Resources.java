@@ -4,8 +4,9 @@ import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
+//import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
-import lejos.hardware.sensor.EV3ColorSensor;
+//import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 
 /**
@@ -87,12 +88,12 @@ public class Resources {
 	/**
 	 * The color sensor.
 	 */
-	public static final EV3MediumRegulatedMotor rotateMotor = new EV3MediumRegulatedMotor(SensorPort.S1);
+	public static final EV3MediumRegulatedMotor rotateMotor = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("B"));
 
 	/**
 	 * The ultrasonic sensor.
 	 */
-	public static final EV3UltrasonicSensor ultrasonicSencor = new EV3UltrasonicSensor(SensorPort.S4);
+	EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
 	/**
 	 * The LCD.
 	 */
