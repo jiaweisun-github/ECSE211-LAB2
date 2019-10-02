@@ -17,6 +17,7 @@ public class Navigation extends Thread {
 		double distance;
 		double angle = 0;
 		double angleRad;
+		double positiveTheta;
 		/**
 		 * Constructor
 		 * 
@@ -55,80 +56,50 @@ public class Navigation extends Thread {
 			xDistance = x - odo.getXYT()[0];
 			yDistance = y - odo.getXYT()[1];
 			distance = Math.sqrt(Math.pow(xDistance, 2)+Math.pow(yDistance, 2));
-//			angle = Math.atan2(xDistance, yDistance);
-//			if(xDistance > 0 && yDistance > 0) {														//positive x and y, 1ST QUADRANT
-//				angle = (pi/2)-Math.atan(yDistance/xDistance);
-//			}
-//			else if(xDistance < 0 && yDistance > 0) {													//negative x and positive y, 2ND QUADRANT
-//				angle = -((pi/2)+Math.atan(yDistance/xDistance));
-//			}
-//			else if(xDistance < 0 && yDistance < 0) {													//negative x and negative y, 3RD QUADRANT
-//				angle = -((pi/2)+Math.atan(yDistance/xDistance));
-//			}
-//			else if(xDistance > 0 && yDistance < 0) {													//positive x and negative y, 4TH QUADRANT
-//				angle = (pi/2)-Math.atan(yDistance/xDistance);
-//			}
-			if(xDistance > 0 && yDistance > 0) {				
-				angle = pi/2 - Math.toRadians(odo.getXYT()[2]) - Math.toRadians(odo.getXYT()[2]); //DONEEEEEE							//positive x and y, 1ST QUADRANT GOOD
+			
+			if(xDistance > 0 && yDistance > 0) {
+				if(odo.getXYT()[2]<0) {
+					positiveTheta = odo.getXYT()[2] + 2*pi;
+				}
+				angle = pi/2 - positiveTheta - Math.atan(yDistance/xDistance); //DONEEEEEE							//positive x and y, 1ST QUADRANT GOOD
 				
 			}
 			else if(xDistance < 0 && yDistance > 0) {													//negative x and positive y, 2ND QUADRANT GOOD
-//				angle = (pi/2)-Math.atan(xDistance/yDistance);
-//				if(Math.toRadians(odo.getXYT()[2])>0 && Math.toRadians(odo.getXYT()[2])<pi/2) {
-//				if(Math.toRadians(odo.getXYT()[2])>3*pi/2 && Math.toRadians(odo.getXYT()[2])<2*pi){
-//					angle = -Math.toRadians(odo.getXYT()[2]+pi-Math.atan(yDistance/xDistance));
+//				if(odo.getXYT()[2]<0) {
+//				if((Math.toRadians(odo.getXYT()[2]) >= 3*pi/2 && Math.toRadians(odo.getXYT()[2]) < 2*pi)|| 								//DONNEEEEE
+//						(Math.toRadians(odo.getXYT()[2]) <= 0 && Math.toRadians(odo.getXYT()[2]) > -pi/2)) {
+//					if(Math.toRadians(odo.getXYT()[2])>3*pi/2+Math.atan(yDistance/xDistance)) {					//case 1
+//						angle = 3*pi/2 - Math.atan(yDistance/xDistance) - Math.toRadians(odo.getXYT()[2]);
+//					}
+//					else {																						//case 2
+//						angle = 3*pi/2 + Math.atan(yDistance/xDistance) - Math.toRadians(odo.getXYT()[2]);
+//					}
 //				}
-//					angle = -(Math.toRadians(odo.getXYT()[2])+(pi/2)+Math.atan(yDistance/xDistance));// normal
+//				else if(Math.toRadians(odo.getXYT()[2]) >= 0 && Math.toRadians(odo.getXYT()[2])< pi/2 ||
+//						(Math.toRadians(odo.getXYT()[2]) <= -3*pi/2 && Math.toRadians(odo.getXYT()[2]) > -2*pi)) {
 //					
 //				}
-//				else if(Math.toRadians(odo.getXYT()[2])>pi/2 && Math.toRadians(odo.getXYT()[2])<pi) {
-////					angle = (Math.toRadians(odo.getXYT()[2])+(pi/2)+Math.atan(yDistance/xDistance));
+////				
+//				else {
+//					angle = 3*pi/2 - Math.toRadians(odo.getXYT()[2] + Math.atan(yDistance/xDistance));
 //				}
-//				else if(Math.toRadians(odo.getXYT()[2])> && Math.toRadians(odo.getXYT()[2])<pi)
-//				angle = pi+Math.atan(yDistance/xDistance)-Math.toRadians(odo.getXYT()[2]);
-//				angleRad = Math.toRadians(angle);
-				if((Math.toRadians(odo.getXYT()[2]) >= 3*pi/2 && Math.toRadians(odo.getXYT()[2]) < 2*pi)|| 								//DONNEEEEE
-						(Math.toRadians(odo.getXYT()[2]) <= 0 && Math.toRadians(odo.getXYT()[2]) > -pi/2)) {
-					if(Math.toRadians(odo.getXYT()[2])>3*pi/2+Math.atan(yDistance/xDistance)) {					//case 1
-						angle = 3*pi/2 - Math.atan(yDistance/xDistance) - Math.toRadians(odo.getXYT()[2]);
-					}
-					else {																						//case 2
-						angle = 3*pi/2 + Math.atan(yDistance/xDistance) - Math.toRadians(odo.getXYT()[2]);
-					}
-				}
-				else if(Math.toRadians(odo.getXYT()[2]) >= 0 && Math.toRadians(odo.getXYT()[2])< pi/2 ||
-						(Math.toRadians(odo.getXYT()[2]) <= -3*pi/2 && Math.toRadians(odo.getXYT()[2]) > -2*pi)) {
-					
-				}
-//				else if(Math.toRadians(odo.getXYT()[2])>= pi/2 && Math.toRadians(odo.getXYT()[2]) < pi || 
-//						(Math.toRadians(odo.getXYT()[2]) <= -pi && Math.toRadians(odo.getXYT()[2]) > -3*pi/2)) {
-//					angle = -pi/2 - Math.toRadians(odo.getXYT()[2] - Math.atan(yDistance/xDistance));
-//				}
-				else {
-					angle = 3*pi/2 - Math.toRadians(odo.getXYT()[2] + Math.atan(yDistance/xDistance));
-				}
+				if(odo.getXYT()[2]<0) {
+				positiveTheta = odo.getXYT()[2] + 2*pi;
+			}
+				angle = 3*pi/2 - positiveTheta - Math.atan(yDistance/xDistance);
 
 			}
 			else if(xDistance < 0 && yDistance < 0) {													//negative x and negative y, 3RD QUADRANT GOOD
-//				angle = -((pi/2)+Math.atan(xDistance/yDistance));
-//				angle = -(Math.toRadians(odo.getXYT()[2])+(pi/2)+Math.atan(yDistance/xDistance));
-				if(Math.toRadians(odo.getXYT()[2])>pi/2 && Math.toRadians(odo.getXYT()[2])<pi) {
-					angle = 3*pi/2 - Math.toRadians(odo.getXYT()[2]) + Math.atan(yDistance/xDistance);
+				if(odo.getXYT()[2]<0) {
+					positiveTheta = odo.getXYT()[2] + 2*pi;
 				}
-				
-				if(Math.toRadians(odo.getXYT()[2])>pi && Math.toRadians(odo.getXYT()[2])<3*pi/2) {
-					
-				}
-				
-				if(Math.toRadians(odo.getXYT()[2])>3*pi/2 && Math.toRadians(odo.getXYT()[2])<2*pi) {
-					angle = 3*pi/2 - Math.toRadians(odo.getXYT()[2]) + Math.atan(yDistance/xDistance);
-				}
-					angle = 3*pi/2-Math.atan(yDistance/xDistance)-Math.toRadians(odo.getXYT()[2]);
-				}
-//				angle = Math.toRadians(odo.getXYT()[2])+(pi/2)-Math.atan(yDistance/xDistance);
-			
+				angle = 3*pi/2 - positiveTheta - Math.atan(yDistance/xDistance);
+			}
 			else if(xDistance > 0 && yDistance < 0) {													//positive x and negative y, 4TH QUADRANT GOOD
-				angle = -((pi/2)+Math.atan(xDistance/yDistance));
+				if(odo.getXYT()[2]<0) {
+					positiveTheta = odo.getXYT()[2] + 2*pi;
+				}
+				angle = pi/2 - positiveTheta - Math.atan(yDistance/xDistance);
 			}
 			System.out.println("           "+angle);
 			
