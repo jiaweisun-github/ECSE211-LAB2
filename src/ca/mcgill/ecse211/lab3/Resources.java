@@ -20,6 +20,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 public class Resources {
 
 //	public static final double WHEEL_BASE = 2;
+	
 	/**
 	 * The wheel radius in centimeters.
 	 */
@@ -70,9 +71,15 @@ public class Resources {
 	 * Speed of the faster rotating wheel (deg/sec).
 	 */
 	public static final int MOTOR_HIGH = (int) (200);
-
+	
+	/**
+	 * Measurements of 1 tile.
+	 */
 	public static final double TILE_SIZE = 30.48;
 	
+	/**
+	 * Filter out value
+	 */
 	public static final int FILTER_OUT = 20;
 
 	/**
@@ -84,16 +91,11 @@ public class Resources {
 	 * The right motor.
 	 */
 	public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
-
-	/**
-	 * The color sensor.
-	 */
-	public static final EV3MediumRegulatedMotor rotateMotor = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("B"));
-
+	
 	/**
 	 * The ultrasonic sensor.
 	 */
-	EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
+	public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
 	/**
 	 * The LCD.
 	 */
